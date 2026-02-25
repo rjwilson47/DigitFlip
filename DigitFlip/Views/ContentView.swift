@@ -56,6 +56,7 @@ struct ConfigErrorView: View {
 
 struct ContentView: View {
     let encoder: EncoderService
+    let glyphCache: GlyphCache
 
     @State private var inputText = ""
     @State private var currentResult: EncodedResult?
@@ -189,13 +190,13 @@ struct ContentView: View {
                         // Line 2: Write This
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Write This")
-                            GlyphRowView(elements: result.elements)
+                            GlyphRowView(elements: result.elements, glyphCache: glyphCache)
                         }
 
                         // Line 3: Flipped Preview
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Flipped Preview")
-                            FlippedGlyphRowView(elements: result.elements)
+                            FlippedGlyphRowView(elements: result.elements, glyphCache: glyphCache)
                         }
                     }
                 }
