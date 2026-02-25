@@ -15,9 +15,12 @@
 		A1B2C3D4E5F60001000A0006 /* GlyphSets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0006 /* GlyphSets */; };
 		A1B2C3D4E5F60001000A0007 /* GlyphRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0007 /* GlyphRowView.swift */; };
 		A1B2C3D4E5F60001000A0008 /* FlippedGlyphRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0008 /* FlippedGlyphRowView.swift */; };
+		A1B2C3D4E5F60001000A0009 /* SVGRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0009 /* SVGRenderer.swift */; };
+		A1B2C3D4E5F60001000A000A /* SVGGlyphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A000A /* SVGGlyphView.swift */; };
 		A1B2C3D4E5F60001000B0001 /* EncoderServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000B0001 /* EncoderServiceTests.swift */; };
 		A1B2C3D4E5F60001000B0002 /* LetterMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000B0002 /* LetterMappingTests.swift */; };
 		A1B2C3D4E5F60001000B0003 /* GlyphSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000B0003 /* GlyphSetTests.swift */; };
+		A1B2C3D4E5F60001000B0004 /* SVGRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000B0004 /* SVGRendererTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,9 +42,12 @@
 		A1B2C3D4E5F60002000A0006 /* GlyphSets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GlyphSets; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000A0007 /* GlyphRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphRowView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000A0008 /* FlippedGlyphRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedGlyphRowView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002000A0009 /* SVGRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGRenderer.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002000A000A /* SVGGlyphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGGlyphView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000B0001 /* EncoderServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncoderServiceTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000B0002 /* LetterMappingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterMappingTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000B0003 /* GlyphSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphSetTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002000B0004 /* SVGRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGRendererTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60003000A0001 /* DigitFlip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigitFlip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B2C3D4E5F60003000B0001 /* DigitFlipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DigitFlipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -100,6 +106,7 @@
 				A1B2C3D4E5F60002000A0002 /* ContentView.swift */,
 				A1B2C3D4E5F60002000A0007 /* GlyphRowView.swift */,
 				A1B2C3D4E5F60002000A0008 /* FlippedGlyphRowView.swift */,
+				A1B2C3D4E5F60002000A000A /* SVGGlyphView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -117,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B2C3D4E5F60002000A0005 /* EncoderService.swift */,
+				A1B2C3D4E5F60002000A0009 /* SVGRenderer.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -135,6 +143,7 @@
 				A1B2C3D4E5F60002000B0001 /* EncoderServiceTests.swift */,
 				A1B2C3D4E5F60002000B0002 /* LetterMappingTests.swift */,
 				A1B2C3D4E5F60002000B0003 /* GlyphSetTests.swift */,
+				A1B2C3D4E5F60002000B0004 /* SVGRendererTests.swift */,
 			);
 			path = DigitFlipTests;
 			sourceTree = "<group>";
@@ -245,6 +254,8 @@
 				A1B2C3D4E5F60001000A0005 /* EncoderService.swift in Sources */,
 				A1B2C3D4E5F60001000A0007 /* GlyphRowView.swift in Sources */,
 				A1B2C3D4E5F60001000A0008 /* FlippedGlyphRowView.swift in Sources */,
+				A1B2C3D4E5F60001000A0009 /* SVGRenderer.swift in Sources */,
+				A1B2C3D4E5F60001000A000A /* SVGGlyphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +266,7 @@
 				A1B2C3D4E5F60001000B0001 /* EncoderServiceTests.swift in Sources */,
 				A1B2C3D4E5F60001000B0002 /* LetterMappingTests.swift in Sources */,
 				A1B2C3D4E5F60001000B0003 /* GlyphSetTests.swift in Sources */,
+				A1B2C3D4E5F60001000B0004 /* SVGRendererTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
