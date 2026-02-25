@@ -29,6 +29,8 @@ enum Theme {
     static let secondary = Color(hex: 0x0f3460)
     static let inputBackground = Color.white.opacity(0.08)
     static let sectionHeader = Color.gray
+    /// Light paper-like background for glyph display areas (ink on paper)
+    static let paperBackground = Color(hex: 0xF5F0EB)
 }
 
 // MARK: - Config Error View (full-screen, per spec)
@@ -191,12 +193,22 @@ struct ContentView: View {
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Write This")
                             GlyphRowView(elements: result.elements, glyphCache: glyphCache)
+                                .padding(8)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Theme.paperBackground)
+                                )
                         }
 
                         // Line 3: Flipped Preview
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Flipped Preview")
                             FlippedGlyphRowView(elements: result.elements, glyphCache: glyphCache)
+                                .padding(8)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Theme.paperBackground)
+                                )
                         }
                     }
                 }
