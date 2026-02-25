@@ -1,0 +1,31 @@
+{
+  "glyphSet": "classic",
+  "letters": {
+    "a": { "code": "0", "glyphFile": "a.svg" },
+    "b": { "code": "9", "glyphFile": "b.svg" },
+    "c": { "code": "0", "glyphFile": "c.svg" },
+    "d": { "code": "10", "glyphFile": "d.svg" },
+    "e": { "code": "2", "glyphFile": "e.svg" },
+    "f": { "code": "3", "glyphFile": "f.svg" },
+    "g": { "code": "6", "glyphFile": "g.svg" },
+    "h": { "code": "4", "glyphFile": "h.svg" },
+    "i": { "code": "1", "glyphFile": "i.svg" },
+    "j": { "code": "1", "glyphFile": "j.svg" },
+    "k": { "code": "71", "glyphFile": "k.svg" },
+    "l": { "code": "1", "glyphFile": "l.svg" },
+    "m": { "code": "41", "glyphFile": "m.svg" },
+    "n": { "code": "4", "glyphFile": "n.svg" },
+    "o": { "code": "0", "glyphFile": "o.svg" },
+    "p": { "code": "01", "glyphFile": "p.svg" },
+    "q": { "code": "6", "glyphFile": "q.svg" },
+    "r": { "code": "1", "glyphFile": "r.svg" },
+    "s": { "code": "7", "glyphFile": "s.svg" },
+    "t": { "code": "0", "glyphFile": "t.svg" },
+    "u": { "code": "0", "glyphFile": "u.svg" },
+    "v": { "code": "7", "glyphFile": "v.svg" },
+    "w": { "code": "14", "glyphFile": "w.svg" },
+    "x": { "code": "7", "glyphFile": "x.svg" },
+    "y": { "code": "6", "glyphFile": "y.svg" },
+    "z": { "code": "2", "glyphFile": "z.svg" }
+  }
+}
