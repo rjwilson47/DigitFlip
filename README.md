@@ -2,7 +2,7 @@
 
 A single-screen iOS app that helps magicians perform a number-to-word reveal trick. The magician writes a sequence of numbers on paper, and when the paper is flipped 180°, the numbers transform into a readable word or phrase.
 
-<!-- screenshot: app main screen with example encoding -->
+<img width="1206" height="2622" alt="image" src="https://github.com/user-attachments/assets/c45372f6-c77e-4296-87bf-84af16537114" />
 
 ## How It Works
 
@@ -15,7 +15,7 @@ Each letter of the alphabet has a custom glyph — a digit (or pair of digits) d
    - **Write This** — the actual glyphs to copy onto paper
    - **Flipped Preview** — what the audience sees when the paper is flipped upside-down
 
-<!-- screenshot: example showing "hello" encoded and flipped -->
+<img width="1206" height="2622" alt="image" src="https://github.com/user-attachments/assets/7b3bc0f4-235c-4c58-9678-7dd9ee421bfb" />
 
 ## Digitexts
 
