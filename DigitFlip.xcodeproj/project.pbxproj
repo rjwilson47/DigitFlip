@@ -13,6 +13,7 @@
 		A1B2C3D4E5F60001000A0004 /* GlyphSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0004 /* GlyphSet.swift */; };
 		A1B2C3D4E5F60001000A0005 /* EncoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0005 /* EncoderService.swift */; };
 		A1B2C3D4E5F60001000A0006 /* GlyphSets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0006 /* GlyphSets */; };
+		A1B2C3D4E5F60001000A000B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A000B /* Assets.xcassets */; };
 		A1B2C3D4E5F60001000A0007 /* GlyphRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0007 /* GlyphRowView.swift */; };
 		A1B2C3D4E5F60001000A0008 /* FlippedGlyphRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0008 /* FlippedGlyphRowView.swift */; };
 		A1B2C3D4E5F60001000A0009 /* SVGRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002000A0009 /* SVGRenderer.swift */; };
@@ -40,6 +41,7 @@
 		A1B2C3D4E5F60002000A0004 /* GlyphSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphSet.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000A0005 /* EncoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncoderService.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000A0006 /* GlyphSets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GlyphSets; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002000A000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000A0007 /* GlyphRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphRowView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000A0008 /* FlippedGlyphRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedGlyphRowView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60002000A0009 /* SVGRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGRenderer.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				A1B2C3D4E5F60006000A0003 /* Models */,
 				A1B2C3D4E5F60006000A0004 /* Services */,
 				A1B2C3D4E5F60006000A0005 /* Resources */,
+				A1B2C3D4E5F60002000A000B /* Assets.xcassets */,
 			);
 			path = DigitFlip;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1B2C3D4E5F60001000A0006 /* GlyphSets in Resources */,
+				A1B2C3D4E5F60001000A000B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
