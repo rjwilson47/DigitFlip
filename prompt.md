@@ -11,7 +11,7 @@ Build a single-screen SwiftUI iOS app called **DigitFlip** that helps magicians 
 1. User types a lowercase word or phrase (a–z, spaces allowed) into a text field.
 2. User presses **"Go"**.
 3. The app displays three lines of output:
-   - **Line 1 — "Write These Numbers":** The digit code for each letter, displayed in **reversed letter order** using standard system font. Codes are treated as **strings, never as integers** — leading zeros must be preserved (e.g., "p" has code `"01"`, which displays as `01`, NOT `1`). Digits from multi-digit letters are shown together (no internal spacing), with a single space separating each letter's code within a word, and a visually wider gap (e.g., triple space or an em-width spacer) separating words. Example: input `"mom"` → letter codes are `41`, `0`, `41` → reversed letter order → display: `41 0 41` (palindrome, so same). Input `"hi"` → codes are `4`, `1` → reversed → display: `1 4`. Input `"hi you"` → reversed letter order is `u, o, y, [space], i, h` → display: `0 0 6   1 4` (wider gap where the word break is). Input `"top"` → codes are `0`, `0`, `01` → reversed → display: `01 0 0` (leading zero on "p" preserved).
+   - **Line 1 — "Write These Numbers":** The digit code for each letter, displayed in **reversed letter order** using standard system font. Codes are treated as **strings, never as integers** — leading zeros must be preserved (e.g., "p" has code `"01"`, which displays as `01`, NOT `1`). Digits from multi-digit letters are shown together (no internal spacing), with a single space separating each letter's code within a word, and a visually wider gap (e.g., triple space or an em-width spacer) separating words. Example: input `"mom"` → letter codes are `41`, `0`, `41` → reversed letter order → display: `41 0 41` (palindrome, so same). Input `"hi"` → codes are `4`, `1` → reversed → display: `1 4`. Input `"hi you"` → reversed letter order is `u, o, y, [space], i, h` → display: `0 0 6   1 4` (wider gap where the word break is). Input `"top"` → codes are `7`, `0`, `01` → reversed → display: `01 0 7` (leading zero on "p" preserved).
    - **Line 2 — "Write This":** The corresponding SVG glyphs rendered in the same reversed letter order as Line 1. This is what the magician physically draws on paper.
    - **Line 3 — "Flipped Preview":** Line 2 rotated 180° as a single unit (both glyph order reversal and individual glyph rotation — identical to physically flipping the paper upside-down). This is what the audience will see.
 
@@ -45,8 +45,8 @@ Below is the full mapping. **Store this as a structured data file** (`letter_map
     "p": { "code": "01", "glyphFile": "p.svg" },
     "q": { "code": "6", "glyphFile": "q.svg" },
     "r": { "code": "1", "glyphFile": "r.svg" },
-    "s": { "code": "7", "glyphFile": "s.svg" },
-    "t": { "code": "0", "glyphFile": "t.svg" },
+    "s": { "code": "5", "glyphFile": "s.svg" },
+    "t": { "code": "7", "glyphFile": "t.svg" },
     "u": { "code": "0", "glyphFile": "u.svg" },
     "v": { "code": "7", "glyphFile": "v.svg" },
     "w": { "code": "14", "glyphFile": "w.svg" },
@@ -57,7 +57,7 @@ Below is the full mapping. **Store this as a structured data file** (`letter_map
 }
 ```
 
-> **IMPORTANT:** Note that multiple letters share the same digit code (e.g., a/c/o/t/u all = `0`, i/j/l/r all = `1`). This is intentional — each letter has a **unique glyph** that draws that digit differently so it looks like the correct letter when rotated. The codes are not unique identifiers; the glyph files are.
+> **IMPORTANT:** Note that multiple letters share the same digit code (e.g., a/c/o/u all = `0`, i/j/l/r all = `1`). This is intentional — each letter has a **unique glyph** that draws that digit differently so it looks like the correct letter when rotated. The codes are not unique identifiers; the glyph files are.
 
 > **CRITICAL — CODES ARE STRINGS, NOT INTEGERS:** The `code` field must be decoded and stored as a `String`, never as an `Int`. Some codes have leading zeros (e.g., `"01"` for "p"). Converting to `Int` and back would produce `"1"`, which is wrong — it changes the digit count, breaks Line 1 display, and misrepresents what the magician should write.
 

@@ -29,8 +29,8 @@ final class EncoderServiceTests: XCTestCase {
             "p": { "code": "01", "glyphFile": "lowercase_p.svg" },
             "q": { "code": "6", "glyphFile": "lowercase_q.svg" },
             "r": { "code": "7", "glyphFile": "lowercase_r.svg" },
-            "s": { "code": "7", "glyphFile": "lowercase_s.svg" },
-            "t": { "code": "0", "glyphFile": "lowercase_t.svg" },
+            "s": { "code": "5", "glyphFile": "lowercase_s.svg" },
+            "t": { "code": "7", "glyphFile": "lowercase_t.svg" },
             "u": { "code": "0", "glyphFile": "lowercase_u.svg" },
             "v": { "code": "7", "glyphFile": "lowercase_v.svg" },
             "w": { "code": "14", "glyphFile": "lowercase_w.svg" },
@@ -101,15 +101,15 @@ final class EncoderServiceTests: XCTestCase {
     func testTop_LeadingZeroPreserved() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("top").get()
-        // t=0, o=0, p=01; reversed: p, o, t → "01 0 0"
-        XCTAssertEqual(result.digitDisplay, "01 0 0")
+        // t=7, o=0, p=01; reversed: p, o, t → "01 0 7"
+        XCTAssertEqual(result.digitDisplay, "01 0 7")
     }
 
     func testWord_WithMultiDigitCodes() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("desk").get()
-        // d=10, e=2, s=7, k=71; reversed: k, s, e, d → "71 7 2 10"
-        XCTAssertEqual(result.digitDisplay, "71 7 2 10")
+        // d=10, e=2, s=5, k=71; reversed: k, s, e, d → "71 5 2 10"
+        XCTAssertEqual(result.digitDisplay, "71 5 2 10")
     }
 
     // MARK: - Reversal Order
@@ -342,8 +342,8 @@ final class EncoderServiceTests: XCTestCase {
     func testLeadingZero_InContext_TopReversed() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("top").get()
-        // t=0, o=0, p=01; reversed → p, o, t → "01 0 0"
-        XCTAssertEqual(result.digitDisplay, "01 0 0")
+        // t=7, o=0, p=01; reversed → p, o, t → "01 0 7"
+        XCTAssertEqual(result.digitDisplay, "01 0 7")
         // Verify the first code is "01" not "1"
         if case .letter(let entry) = result.elements[0] {
             XCTAssertEqual(entry.code, "01")
@@ -396,7 +396,7 @@ final class EncoderServiceTests: XCTestCase {
     func testSpecExample_Top() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("top").get()
-        XCTAssertEqual(result.digitDisplay, "01 0 0")
+        XCTAssertEqual(result.digitDisplay, "01 0 7")
     }
 
     // MARK: - Full Alphabet Encoding
