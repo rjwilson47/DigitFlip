@@ -11,32 +11,32 @@ final class EncoderServiceTests: XCTestCase {
         {
           "glyphSet": "classic",
           "letters": {
-            "a": { "code": "0", "glyphFile": "a.svg" },
-            "b": { "code": "9", "glyphFile": "b.svg" },
-            "c": { "code": "0", "glyphFile": "c.svg" },
-            "d": { "code": "10", "glyphFile": "d.svg" },
-            "e": { "code": "2", "glyphFile": "e.svg" },
-            "f": { "code": "3", "glyphFile": "f.svg" },
-            "g": { "code": "6", "glyphFile": "g.svg" },
-            "h": { "code": "4", "glyphFile": "h.svg" },
-            "i": { "code": "1", "glyphFile": "i.svg" },
-            "j": { "code": "1", "glyphFile": "j.svg" },
-            "k": { "code": "71", "glyphFile": "k.svg" },
-            "l": { "code": "1", "glyphFile": "l.svg" },
-            "m": { "code": "41", "glyphFile": "m.svg" },
-            "n": { "code": "4", "glyphFile": "n.svg" },
-            "o": { "code": "0", "glyphFile": "o.svg" },
-            "p": { "code": "01", "glyphFile": "p.svg" },
-            "q": { "code": "6", "glyphFile": "q.svg" },
-            "r": { "code": "1", "glyphFile": "r.svg" },
-            "s": { "code": "7", "glyphFile": "s.svg" },
-            "t": { "code": "0", "glyphFile": "t.svg" },
-            "u": { "code": "0", "glyphFile": "u.svg" },
-            "v": { "code": "7", "glyphFile": "v.svg" },
-            "w": { "code": "14", "glyphFile": "w.svg" },
-            "x": { "code": "7", "glyphFile": "x.svg" },
-            "y": { "code": "6", "glyphFile": "y.svg" },
-            "z": { "code": "2", "glyphFile": "z.svg" }
+            "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
+            "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
+            "c": { "code": "0", "glyphFile": "lowercase_c.svg" },
+            "d": { "code": "10", "glyphFile": "lowercase_d.svg" },
+            "e": { "code": "2", "glyphFile": "lowercase_e.svg" },
+            "f": { "code": "3", "glyphFile": "lowercase_f.svg" },
+            "g": { "code": "6", "glyphFile": "lowercase_g.svg" },
+            "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
+            "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
+            "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
+            "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+            "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
+            "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
+            "n": { "code": "4", "glyphFile": "lowercase_n.svg" },
+            "o": { "code": "0", "glyphFile": "lowercase_o.svg" },
+            "p": { "code": "01", "glyphFile": "lowercase_p.svg" },
+            "q": { "code": "6", "glyphFile": "lowercase_q.svg" },
+            "r": { "code": "7", "glyphFile": "lowercase_r.svg" },
+            "s": { "code": "7", "glyphFile": "lowercase_s.svg" },
+            "t": { "code": "0", "glyphFile": "lowercase_t.svg" },
+            "u": { "code": "0", "glyphFile": "lowercase_u.svg" },
+            "v": { "code": "7", "glyphFile": "lowercase_v.svg" },
+            "w": { "code": "14", "glyphFile": "lowercase_w.svg" },
+            "x": { "code": "7", "glyphFile": "lowercase_x.svg" },
+            "y": { "code": "6", "glyphFile": "lowercase_y.svg" },
+            "z": { "code": "2", "glyphFile": "lowercase_z.svg" }
           }
         }
         """
@@ -55,7 +55,7 @@ final class EncoderServiceTests: XCTestCase {
         let encoder = makeEncoder()
         let result = try! encoder.encode("a").get()
         XCTAssertEqual(result.digitDisplay, "0")
-        XCTAssertEqual(result.glyphFiles, ["a.svg"])
+        XCTAssertEqual(result.glyphFiles, ["lowercase_a.svg"])
     }
 
     func testSingleLetterM_MultiDigitCode() {
@@ -63,14 +63,14 @@ final class EncoderServiceTests: XCTestCase {
         let result = try! encoder.encode("m").get()
         // "m" → code "41", glyph "m.svg"
         XCTAssertEqual(result.digitDisplay, "41")
-        XCTAssertEqual(result.glyphFiles, ["m.svg"])
+        XCTAssertEqual(result.glyphFiles, ["lowercase_m.svg"])
     }
 
     func testSingleLetterK_MultiDigitCode() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("k").get()
         XCTAssertEqual(result.digitDisplay, "71")
-        XCTAssertEqual(result.glyphFiles, ["k.svg"])
+        XCTAssertEqual(result.glyphFiles, ["lowercase_k.svg"])
     }
 
     func testSingleLetterP_LeadingZeroCode() {
@@ -78,7 +78,7 @@ final class EncoderServiceTests: XCTestCase {
         let result = try! encoder.encode("p").get()
         // "p" has code "01" — leading zero must be preserved
         XCTAssertEqual(result.digitDisplay, "01")
-        XCTAssertEqual(result.glyphFiles, ["p.svg"])
+        XCTAssertEqual(result.glyphFiles, ["lowercase_p.svg"])
     }
 
     // MARK: - Multi-Letter Words
@@ -88,7 +88,7 @@ final class EncoderServiceTests: XCTestCase {
         let result = try! encoder.encode("hi").get()
         // h=4, i=1; reversed: i, h → "1 4"
         XCTAssertEqual(result.digitDisplay, "1 4")
-        XCTAssertEqual(result.glyphFiles, ["i.svg", "h.svg"])
+        XCTAssertEqual(result.glyphFiles, ["lowercase_i.svg", "lowercase_h.svg"])
     }
 
     func testMom_Palindrome() {
