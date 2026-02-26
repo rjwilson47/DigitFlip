@@ -2,56 +2,46 @@ import SwiftUI
 
 @main
 struct DigitFlipApp: App {
-    @State private var encoder: EncoderService?
-    @State private var glyphCache: GlyphCache?
-    @State private var configError: String?
-    @State private var glyphSetInfos: [GlyphSetInfo] = []
-    @State private var selectedGlyphSetID: String = "classic"
-
-    init() {
-        let infos = GlyphSet.discoverGlyphSets()
-        _glyphSetInfos = State(initialValue: infos)
-
-        switch GlyphSet.loadLetterMap() {
-        case .success(let map):
-            let enc = EncoderService(letterMap: map)
-            let cache = GlyphCache(glyphSetName: map.glyphSet)
-            cache.loadAll(letterMap: map)
-            _encoder = State(initialValue: enc)
-            _glyphCache = State(initialValue: cache)
-            _configError = State(initialValue: nil)
-            _selectedGlyphSetID = State(initialValue: map.glyphSet)
-        case .failure(.configurationError(let message)):
-            _encoder = State(initialValue: nil)
-            _glyphCache = State(initialValue: nil)
-            _configError = State(initialValue: message)
-        }
-    }
+    @StateObject private var viewModel = AppViewModel()
 
     var body: some Scene {
         WindowGroup {
-            if let encoder, let glyphCache {
-                ContentView(
-                    encoder: encoder,
-                    glyphCache: glyphCache,
-                    glyphSetInfos: glyphSetInfos,
-                    selectedGlyphSetID: $selectedGlyphSetID,
-                    onGlyphSetChanged: switchGlyphSet
-                )
-                .preferredColorScheme(.dark)
+            if let encoder = viewModel.encoder, let glyphCache = viewModel.glyphCache {
+                ContentView(viewModel: viewModel)
+                    .preferredColorScheme(.dark)
             } else {
-                ConfigErrorView(message: configError ?? "Unknown error")
+                ConfigErrorView(message: viewModel.configError ?? "Unknown error")
                     .preferredColorScheme(.dark)
             }
         }
     }
+}
 
-    private func switchGlyphSet(to id: String) {
+/// Central app state: manages glyph set discovery, loading, and switching.
+@MainActor
+final class AppViewModel: ObservableObject {
+    @Published var encoder: EncoderService?
+    @Published var glyphCache: GlyphCache?
+    @Published var configError: String?
+    @Published var glyphSetInfos: [GlyphSetInfo] = []
+    @Published var selectedGlyphSetID: String = "classic"
+
+    init() {
+        glyphSetInfos = GlyphSet.discoverGlyphSets()
+        loadGlyphSet("classic")
+    }
+
+    func switchGlyphSet(to id: String) {
+        guard id != selectedGlyphSetID else { return }
+        loadGlyphSet(id)
+    }
+
+    private func loadGlyphSet(_ id: String) {
         switch GlyphSet.loadLetterMap(glyphSetName: id) {
         case .success(let map):
             let enc = EncoderService(letterMap: map)
             let cache = GlyphCache(glyphSetName: map.glyphSet)
-            cache.loadAll(letterMap: map)
+            cache.preload(letterMap: map)
             encoder = enc
             glyphCache = cache
             configError = nil

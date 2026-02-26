@@ -45,7 +45,7 @@ final class SVGRendererTests: XCTestCase {
             ("a", "0"), ("b", "9"), ("c", "0"), ("d", "10"), ("e", "2"),
             ("f", "3"), ("g", "6"), ("h", "4"), ("i", "1"), ("j", "1"),
             ("k", "71"), ("l", "1"), ("m", "41"), ("n", "4"), ("o", "0"),
-            ("p", "01"), ("q", "6"), ("r", "7"), ("s", "7"), ("t", "0"),
+            ("p", "01"), ("q", "6"), ("r", "7"), ("s", "5"), ("t", "7"),
             ("u", "0"), ("v", "7"), ("w", "14"), ("x", "7"), ("y", "6"),
             ("z", "2")
         ]
@@ -273,7 +273,7 @@ final class SVGRendererTests: XCTestCase {
         let map = try! JSONDecoder().decode(LetterMap.self, from: data)
 
         let cache = GlyphCache(glyphSetName: "test")
-        cache.loadAll(letterMap: map)
+        cache.preload(letterMap: map)
 
         // z.svg doesn't exist in any bundle, so it should fall back to placeholder
         let glyph = cache.glyph(forLetter: "z", code: "2", glyphFile: "z.svg")
@@ -295,7 +295,7 @@ final class SVGRendererTests: XCTestCase {
         let map = try! JSONDecoder().decode(LetterMap.self, from: data)
 
         let cache = GlyphCache(glyphSetName: "test")
-        cache.loadAll(letterMap: map)
+        cache.preload(letterMap: map)
 
         let glyph = cache.glyph(forLetter: "m", code: "41", glyphFile: "m.svg")!
         let texts = glyph.textElements.map(\.content)
@@ -318,7 +318,7 @@ final class SVGRendererTests: XCTestCase {
         let map = try! JSONDecoder().decode(LetterMap.self, from: data)
 
         let cache = GlyphCache(glyphSetName: "test")
-        cache.loadAll(letterMap: map)
+        cache.preload(letterMap: map)
 
         // Glyph should be cached
         XCTAssertNotNil(cache.glyph(for: "a.svg"))
@@ -330,7 +330,7 @@ final class SVGRendererTests: XCTestCase {
 
     func testGlyphCache_OnDemandLoading() {
         let cache = GlyphCache(glyphSetName: "test")
-        // Don't call loadAll — use on-demand loading
+        // Don't call preload — use on-demand loading
         let glyph = cache.glyph(forLetter: "x", code: "7", glyphFile: "x.svg")
         XCTAssertNotNil(glyph, "On-demand loading should produce placeholder for missing file")
     }

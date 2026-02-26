@@ -1,4 +1,7 @@
 import Foundation
+import os.log
+
+private let logger = Logger(subsystem: "com.digitflip", category: "GlyphSet")
 
 /// Handles loading glyph set configuration and resolving glyph files
 /// using the three-tier fallback: documents directory → bundle → placeholder.
@@ -14,6 +17,7 @@ struct GlyphSet {
     /// Returns metadata for each set (for the picker UI), sorted with available sets first.
     static func discoverGlyphSets(bundle: Bundle = .main) -> [GlyphSetInfo] {
         guard let glyphSetsURL = bundle.resourceURL?.appendingPathComponent("GlyphSets") else {
+            logger.warning("GlyphSets directory not found in bundle resources")
             return []
         }
         guard let contents = try? FileManager.default.contentsOfDirectory(
@@ -21,6 +25,7 @@ struct GlyphSet {
             includingPropertiesForKeys: [.isDirectoryKey],
             options: .skipsHiddenFiles
         ) else {
+            logger.warning("Could not enumerate GlyphSets directory at \(glyphSetsURL.path)")
             return []
         }
 

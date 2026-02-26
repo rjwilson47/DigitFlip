@@ -57,11 +57,7 @@ struct ConfigErrorView: View {
 // MARK: - Content View (Main Screen)
 
 struct ContentView: View {
-    let encoder: EncoderService
-    let glyphCache: GlyphCache
-    let glyphSetInfos: [GlyphSetInfo]
-    @Binding var selectedGlyphSetID: String
-    var onGlyphSetChanged: (_ id: String) -> Void
+    @ObservedObject var viewModel: AppViewModel
 
     @State private var inputText = ""
     @State private var currentResult: EncodedResult?
@@ -72,7 +68,7 @@ struct ContentView: View {
     // Live validation (runs against lowercased input per spec)
     private var validationError: ValidationError? {
         guard !inputText.isEmpty else { return nil }
-        return encoder.validate(inputText)
+        return viewModel.encoder?.validate(inputText)
     }
 
     private var validationMessage: String? {
@@ -88,7 +84,11 @@ struct ContentView: View {
 
     // Go disabled when empty/whitespace, or any validation error
     private var isGoDisabled: Bool {
-        encoder.isInputEmpty(inputText) || validationError != nil
+        viewModel.encoder?.isInputEmpty(inputText) != false || validationError != nil
+    }
+
+    private var selectedDisplayName: String {
+        viewModel.glyphSetInfos.first(where: { $0.id == viewModel.selectedGlyphSetID })?.displayName ?? viewModel.selectedGlyphSetID
     }
 
     var body: some View {
@@ -101,13 +101,13 @@ struct ContentView: View {
                 .padding(.bottom, 4)
 
             // Glyph set picker
-            if glyphSetInfos.count > 1 {
+            if viewModel.glyphSetInfos.count > 1 {
                 Menu {
-                    ForEach(glyphSetInfos) { info in
+                    ForEach(viewModel.glyphSetInfos) { info in
                         if info.isAvailable {
                             Button {
-                                if info.id != selectedGlyphSetID {
-                                    onGlyphSetChanged(info.id)
+                                if info.id != viewModel.selectedGlyphSetID {
+                                    viewModel.switchGlyphSet(to: info.id)
                                     withAnimation(.easeOut(duration: 0.3)) {
                                         currentResult = nil
                                         currentError = nil
@@ -115,7 +115,7 @@ struct ContentView: View {
                                     }
                                 }
                             } label: {
-                                if info.id == selectedGlyphSetID {
+                                if info.id == viewModel.selectedGlyphSetID {
                                     Label(info.displayName, systemImage: "checkmark")
                                 } else {
                                     Text(info.displayName)
@@ -127,8 +127,7 @@ struct ContentView: View {
                     }
                 } label: {
                     HStack(spacing: 6) {
-                        let selectedName = glyphSetInfos.first(where: { $0.id == selectedGlyphSetID })?.displayName ?? selectedGlyphSetID
-                        Text(selectedName)
+                        Text(selectedDisplayName)
                             .font(.system(size: 14, weight: .medium))
                         Image(systemName: "chevron.down")
                             .font(.system(size: 10, weight: .semibold))
@@ -237,7 +236,7 @@ struct ContentView: View {
                         // Line 2: Write This
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Write This")
-                            GlyphRowView(elements: result.elements, glyphCache: glyphCache)
+                            GlyphRowView(elements: result.elements, glyphCache: viewModel.glyphCache!)
                                 .padding(8)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -248,7 +247,7 @@ struct ContentView: View {
                         // Line 3: Flipped Preview
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Flipped Preview")
-                            FlippedGlyphRowView(elements: result.elements, glyphCache: glyphCache)
+                            FlippedGlyphRowView(elements: result.elements, glyphCache: viewModel.glyphCache!)
                                 .padding(8)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -274,6 +273,7 @@ struct ContentView: View {
 
     private func handleGo() {
         isTextFieldFocused = false
+        guard let encoder = viewModel.encoder else { return }
 
         let result = encoder.encode(inputText)
         withAnimation(.easeOut(duration: 0.3)) {
