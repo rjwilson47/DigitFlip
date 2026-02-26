@@ -10,32 +10,32 @@ final class LetterMappingTests: XCTestCase {
         {
           "glyphSet": "classic",
           "letters": {
-            "a": { "code": "0", "glyphFile": "a.svg" },
-            "b": { "code": "9", "glyphFile": "b.svg" },
-            "c": { "code": "0", "glyphFile": "c.svg" },
-            "d": { "code": "10", "glyphFile": "d.svg" },
-            "e": { "code": "2", "glyphFile": "e.svg" },
-            "f": { "code": "3", "glyphFile": "f.svg" },
-            "g": { "code": "6", "glyphFile": "g.svg" },
-            "h": { "code": "4", "glyphFile": "h.svg" },
-            "i": { "code": "1", "glyphFile": "i.svg" },
-            "j": { "code": "1", "glyphFile": "j.svg" },
-            "k": { "code": "71", "glyphFile": "k.svg" },
-            "l": { "code": "1", "glyphFile": "l.svg" },
-            "m": { "code": "41", "glyphFile": "m.svg" },
-            "n": { "code": "4", "glyphFile": "n.svg" },
-            "o": { "code": "0", "glyphFile": "o.svg" },
-            "p": { "code": "01", "glyphFile": "p.svg" },
-            "q": { "code": "6", "glyphFile": "q.svg" },
-            "r": { "code": "1", "glyphFile": "r.svg" },
-            "s": { "code": "7", "glyphFile": "s.svg" },
-            "t": { "code": "0", "glyphFile": "t.svg" },
-            "u": { "code": "0", "glyphFile": "u.svg" },
-            "v": { "code": "7", "glyphFile": "v.svg" },
-            "w": { "code": "14", "glyphFile": "w.svg" },
-            "x": { "code": "7", "glyphFile": "x.svg" },
-            "y": { "code": "6", "glyphFile": "y.svg" },
-            "z": { "code": "2", "glyphFile": "z.svg" }
+            "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
+            "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
+            "c": { "code": "0", "glyphFile": "lowercase_c.svg" },
+            "d": { "code": "10", "glyphFile": "lowercase_d.svg" },
+            "e": { "code": "2", "glyphFile": "lowercase_e.svg" },
+            "f": { "code": "3", "glyphFile": "lowercase_f.svg" },
+            "g": { "code": "6", "glyphFile": "lowercase_g.svg" },
+            "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
+            "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
+            "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
+            "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+            "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
+            "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
+            "n": { "code": "4", "glyphFile": "lowercase_n.svg" },
+            "o": { "code": "0", "glyphFile": "lowercase_o.svg" },
+            "p": { "code": "01", "glyphFile": "lowercase_p.svg" },
+            "q": { "code": "6", "glyphFile": "lowercase_q.svg" },
+            "r": { "code": "7", "glyphFile": "lowercase_r.svg" },
+            "s": { "code": "5", "glyphFile": "lowercase_s.svg" },
+            "t": { "code": "7", "glyphFile": "lowercase_t.svg" },
+            "u": { "code": "0", "glyphFile": "lowercase_u.svg" },
+            "v": { "code": "7", "glyphFile": "lowercase_v.svg" },
+            "w": { "code": "14", "glyphFile": "lowercase_w.svg" },
+            "x": { "code": "7", "glyphFile": "lowercase_x.svg" },
+            "y": { "code": "6", "glyphFile": "lowercase_y.svg" },
+            "z": { "code": "2", "glyphFile": "lowercase_z.svg" }
           }
         }
         """
@@ -115,11 +115,11 @@ final class LetterMappingTests: XCTestCase {
         let data = json.data(using: .utf8)!
         let map = try! JSONDecoder().decode(LetterMap.self, from: data)
 
-        // Each letter's glyphFile should be "<letter>.svg"
+        // Each letter's glyphFile should be "lowercase_<letter>.svg"
         for (letter, entry) in map.letters {
             XCTAssertEqual(
-                entry.glyphFile, "\(letter).svg",
-                "Glyph file for '\(letter)' should be '\(letter).svg', got '\(entry.glyphFile)'"
+                entry.glyphFile, "lowercase_\(letter).svg",
+                "Glyph file for '\(letter)' should be 'lowercase_\(letter).svg', got '\(entry.glyphFile)'"
             )
         }
     }
@@ -196,32 +196,32 @@ final class LetterMappingTests: XCTestCase {
         {
           "glyphSet": "classic",
           "letters": {
-            "a": { "code": "0", "glyphFile": "a.svg" },
-            "b": { "code": "9", "glyphFile": "b.svg" },
-            "c": { "code": "0", "glyphFile": "c.svg" },
-            "d": { "code": "10", "glyphFile": "d.svg" },
-            "e": { "code": "2", "glyphFile": "e.svg" },
-            "f": { "code": "3", "glyphFile": "f.svg" },
-            "g": { "code": "6", "glyphFile": "g.svg" },
-            "h": { "code": "4", "glyphFile": "h.svg" },
-            "i": { "code": "1", "glyphFile": "i.svg" },
-            "j": { "code": "1", "glyphFile": "j.svg" },
-            "k": { "code": "71", "glyphFile": "k.svg" },
-            "l": { "code": "1", "glyphFile": "l.svg" },
-            "m": { "code": "41", "glyphFile": "m.svg" },
-            "n": { "code": "4", "glyphFile": "n.svg" },
-            "o": { "code": "0", "glyphFile": "o.svg" },
-            "p": { "code": "01", "glyphFile": "p.svg" },
-            "q": { "code": "6", "glyphFile": "q.svg" },
-            "r": { "code": "1", "glyphFile": "r.svg" },
-            "s": { "code": "7", "glyphFile": "s.svg" },
-            "t": { "code": "0", "glyphFile": "t.svg" },
-            "u": { "code": "0", "glyphFile": "u.svg" },
-            "v": { "code": "7", "glyphFile": "v.svg" },
-            "w": { "code": "14", "glyphFile": "w.svg" },
-            "x": { "code": "7", "glyphFile": "x.svg" },
-            "y": { "code": "6", "glyphFile": "y.svg" },
-            "z": { "code": "2", "glyphFile": "z.svg" }
+            "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
+            "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
+            "c": { "code": "0", "glyphFile": "lowercase_c.svg" },
+            "d": { "code": "10", "glyphFile": "lowercase_d.svg" },
+            "e": { "code": "2", "glyphFile": "lowercase_e.svg" },
+            "f": { "code": "3", "glyphFile": "lowercase_f.svg" },
+            "g": { "code": "6", "glyphFile": "lowercase_g.svg" },
+            "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
+            "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
+            "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
+            "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+            "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
+            "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
+            "n": { "code": "4", "glyphFile": "lowercase_n.svg" },
+            "o": { "code": "0", "glyphFile": "lowercase_o.svg" },
+            "p": { "code": "01", "glyphFile": "lowercase_p.svg" },
+            "q": { "code": "6", "glyphFile": "lowercase_q.svg" },
+            "r": { "code": "7", "glyphFile": "lowercase_r.svg" },
+            "s": { "code": "5", "glyphFile": "lowercase_s.svg" },
+            "t": { "code": "7", "glyphFile": "lowercase_t.svg" },
+            "u": { "code": "0", "glyphFile": "lowercase_u.svg" },
+            "v": { "code": "7", "glyphFile": "lowercase_v.svg" },
+            "w": { "code": "14", "glyphFile": "lowercase_w.svg" },
+            "x": { "code": "7", "glyphFile": "lowercase_x.svg" },
+            "y": { "code": "6", "glyphFile": "lowercase_y.svg" },
+            "z": { "code": "2", "glyphFile": "lowercase_z.svg" }
           }
         }
         """
