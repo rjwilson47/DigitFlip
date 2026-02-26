@@ -24,7 +24,7 @@ The app supports multiple glyph sets ("digitexts"), each with its own visual sty
 | Digitext | Description | Status |
 |----------|-------------|--------|
 | Digitext | The default glyph set | Available |
-| Digitext without 0 | Alternative glyphs that avoid the digit 0 | Coming Soon |
+| Digitext without 0 | Alternative glyphs that avoid the digit 0 (e.g. using deck of cards) | Coming Soon |
 
 ## Requirements
 
