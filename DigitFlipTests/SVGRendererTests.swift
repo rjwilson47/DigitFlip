@@ -262,6 +262,8 @@ final class SVGRendererTests: XCTestCase {
         let json = """
         {
           "glyphSet": "test",
+          "displayName": "Test",
+          "status": "available",
           "letters": {
             "z": { "code": "2", "glyphFile": "z.svg" }
           }
@@ -282,6 +284,8 @@ final class SVGRendererTests: XCTestCase {
         let json = """
         {
           "glyphSet": "test",
+          "displayName": "Test",
+          "status": "available",
           "letters": {
             "m": { "code": "41", "glyphFile": "m.svg" }
           }
@@ -303,6 +307,8 @@ final class SVGRendererTests: XCTestCase {
         let json = """
         {
           "glyphSet": "test",
+          "displayName": "Test",
+          "status": "available",
           "letters": {
             "a": { "code": "0", "glyphFile": "a.svg" }
           }

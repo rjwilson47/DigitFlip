@@ -59,6 +59,9 @@ struct ConfigErrorView: View {
 struct ContentView: View {
     let encoder: EncoderService
     let glyphCache: GlyphCache
+    let glyphSetInfos: [GlyphSetInfo]
+    @Binding var selectedGlyphSetID: String
+    var onGlyphSetChanged: (_ id: String) -> Void
 
     @State private var inputText = ""
     @State private var currentResult: EncodedResult?
@@ -96,6 +99,48 @@ struct ContentView: View {
                 .foregroundStyle(.white)
                 .padding(.top, 24)
                 .padding(.bottom, 4)
+
+            // Glyph set picker
+            if glyphSetInfos.count > 1 {
+                Menu {
+                    ForEach(glyphSetInfos) { info in
+                        if info.isAvailable {
+                            Button {
+                                if info.id != selectedGlyphSetID {
+                                    onGlyphSetChanged(info.id)
+                                    withAnimation(.easeOut(duration: 0.3)) {
+                                        currentResult = nil
+                                        currentError = nil
+                                        hasPressed = false
+                                    }
+                                }
+                            } label: {
+                                if info.id == selectedGlyphSetID {
+                                    Label(info.displayName, systemImage: "checkmark")
+                                } else {
+                                    Text(info.displayName)
+                                }
+                            }
+                        } else {
+                            Text("\(info.displayName) (Coming Soon)")
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        let selectedName = glyphSetInfos.first(where: { $0.id == selectedGlyphSetID })?.displayName ?? selectedGlyphSetID
+                        Text(selectedName)
+                            .font(.system(size: 14, weight: .medium))
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10, weight: .semibold))
+                    }
+                    .foregroundStyle(Theme.accent)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Theme.inputBackground)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                .padding(.top, 4)
+            }
 
             // Input area
             VStack(spacing: 8) {

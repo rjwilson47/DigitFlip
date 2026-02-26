@@ -8,6 +8,51 @@ struct GlyphSet {
         case configurationError(String)
     }
 
+    // MARK: - Glyph Set Discovery
+
+    /// Discover all glyph sets by scanning bundle subfolders of GlyphSets/.
+    /// Returns metadata for each set (for the picker UI), sorted with available sets first.
+    static func discoverGlyphSets(bundle: Bundle = .main) -> [GlyphSetInfo] {
+        guard let glyphSetsURL = bundle.resourceURL?.appendingPathComponent("GlyphSets") else {
+            return []
+        }
+        guard let contents = try? FileManager.default.contentsOfDirectory(
+            at: glyphSetsURL,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: .skipsHiddenFiles
+        ) else {
+            return []
+        }
+
+        var infos: [GlyphSetInfo] = []
+        for folderURL in contents {
+            guard (try? folderURL.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true else {
+                continue
+            }
+            let jsonURL = folderURL.appendingPathComponent("letter_map.json")
+            guard let data = try? Data(contentsOf: jsonURL) else { continue }
+
+            // Decode just the top-level metadata without parsing all letter entries
+            struct MetadataOnly: Decodable {
+                let glyphSet: String
+                let displayName: String
+                let status: String
+            }
+            guard let meta = try? JSONDecoder().decode(MetadataOnly.self, from: data) else { continue }
+            infos.append(GlyphSetInfo(
+                glyphSet: meta.glyphSet,
+                displayName: meta.displayName,
+                status: meta.status
+            ))
+        }
+
+        // Sort: available first, then by display name
+        return infos.sorted { a, b in
+            if a.isAvailable != b.isAvailable { return a.isAvailable }
+            return a.displayName < b.displayName
+        }
+    }
+
     // MARK: - Letter Map Loading
 
     /// Load letter_map.json using the three-tier fallback.

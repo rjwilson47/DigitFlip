@@ -53,6 +53,8 @@ final class GlyphSetTests: XCTestCase {
         let json = """
         {
           "glyphSet": "test",
+          "displayName": "Test",
+          "status": "available",
           "letters": {
             "a": { "code": "0", "glyphFile": "a.svg" }
           }
@@ -87,6 +89,8 @@ final class GlyphSetTests: XCTestCase {
         let json = """
         {
           "glyphSet": "empty",
+          "displayName": "Empty",
+          "status": "available",
           "letters": {}
         }
         """
@@ -169,6 +173,43 @@ final class GlyphSetTests: XCTestCase {
                 placeholder.contains(">\(code)<"),
                 "Placeholder for '\(letter)' should contain code '\(code)'"
             )
+        }
+    }
+
+    // MARK: - GlyphSetInfo
+
+    func testGlyphSetInfo_AvailableStatus() {
+        let info = GlyphSetInfo(glyphSet: "classic", displayName: "Digitext", status: "available")
+        XCTAssertTrue(info.isAvailable)
+        XCTAssertEqual(info.id, "classic")
+    }
+
+    func testGlyphSetInfo_ComingSoonStatus() {
+        let info = GlyphSetInfo(glyphSet: "no_zero", displayName: "Digitext without 0", status: "coming_soon")
+        XCTAssertFalse(info.isAvailable)
+        XCTAssertEqual(info.id, "no_zero")
+    }
+
+    func testLetterMap_IncludesDisplayNameAndStatus() {
+        let json = """
+        {
+          "glyphSet": "classic",
+          "displayName": "Digitext",
+          "status": "available",
+          "letters": {
+            "a": { "code": "0", "glyphFile": "lowercase_a.svg" }
+          }
+        }
+        """
+        let data = json.data(using: .utf8)!
+        let result = GlyphSet.decodeLetterMap(from: data)
+
+        switch result {
+        case .success(let map):
+            XCTAssertEqual(map.displayName, "Digitext")
+            XCTAssertEqual(map.status, "available")
+        case .failure:
+            XCTFail("Should decode valid JSON with displayName and status")
         }
     }
 }

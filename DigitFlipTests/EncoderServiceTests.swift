@@ -10,6 +10,8 @@ final class EncoderServiceTests: XCTestCase {
         let json = """
         {
           "glyphSet": "classic",
+          "displayName": "Digitext",
+          "status": "available",
           "letters": {
             "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
             "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
@@ -281,6 +283,8 @@ final class EncoderServiceTests: XCTestCase {
         let json = """
         {
           "glyphSet": "classic",
+          "displayName": "Digitext",
+          "status": "available",
           "letters": {
             "b": { "code": "9", "glyphFile": "b.svg" }
           }
@@ -303,6 +307,8 @@ final class EncoderServiceTests: XCTestCase {
         let json = """
         {
           "glyphSet": "test",
+          "displayName": "Test",
+          "status": "available",
           "letters": {
             "a": { "code": "0", "glyphFile": "a.svg" }
           }

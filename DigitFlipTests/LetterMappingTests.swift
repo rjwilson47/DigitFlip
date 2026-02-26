@@ -9,6 +9,8 @@ final class LetterMappingTests: XCTestCase {
         let json = """
         {
           "glyphSet": "classic",
+          "displayName": "Digitext",
+          "status": "available",
           "letters": {
             "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
             "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
@@ -130,6 +132,8 @@ final class LetterMappingTests: XCTestCase {
         let json = """
         {
           "glyphSet": "classic",
+          "displayName": "Digitext",
+          "status": "available",
           "letters": {
             "a": { "code": "0" }
           }
@@ -195,6 +199,8 @@ final class LetterMappingTests: XCTestCase {
         """
         {
           "glyphSet": "classic",
+          "displayName": "Digitext",
+          "status": "available",
           "letters": {
             "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
             "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
