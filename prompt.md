@@ -27,32 +27,32 @@ Below is the full mapping. **Store this as a structured data file** (`letter_map
 {
   "glyphSet": "classic",
   "letters": {
-    "a": { "code": "0", "glyphFile": "a.svg" },
-    "b": { "code": "9", "glyphFile": "b.svg" },
-    "c": { "code": "0", "glyphFile": "c.svg" },
-    "d": { "code": "10", "glyphFile": "d.svg" },
-    "e": { "code": "2", "glyphFile": "e.svg" },
-    "f": { "code": "3", "glyphFile": "f.svg" },
-    "g": { "code": "6", "glyphFile": "g.svg" },
-    "h": { "code": "4", "glyphFile": "h.svg" },
-    "i": { "code": "1", "glyphFile": "i.svg" },
-    "j": { "code": "1", "glyphFile": "j.svg" },
-    "k": { "code": "71", "glyphFile": "k.svg" },
-    "l": { "code": "1", "glyphFile": "l.svg" },
-    "m": { "code": "41", "glyphFile": "m.svg" },
-    "n": { "code": "4", "glyphFile": "n.svg" },
-    "o": { "code": "0", "glyphFile": "o.svg" },
-    "p": { "code": "01", "glyphFile": "p.svg" },
-    "q": { "code": "6", "glyphFile": "q.svg" },
-    "r": { "code": "1", "glyphFile": "r.svg" },
-    "s": { "code": "5", "glyphFile": "s.svg" },
-    "t": { "code": "7", "glyphFile": "t.svg" },
-    "u": { "code": "0", "glyphFile": "u.svg" },
-    "v": { "code": "7", "glyphFile": "v.svg" },
-    "w": { "code": "14", "glyphFile": "w.svg" },
-    "x": { "code": "7", "glyphFile": "x.svg" },
-    "y": { "code": "6", "glyphFile": "y.svg" },
-    "z": { "code": "2", "glyphFile": "z.svg" }
+    "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
+    "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
+    "c": { "code": "0", "glyphFile": "lowercase_c.svg" },
+    "d": { "code": "10", "glyphFile": "lowercase_d.svg" },
+    "e": { "code": "2", "glyphFile": "lowercase_e.svg" },
+    "f": { "code": "3", "glyphFile": "lowercase_f.svg" },
+    "g": { "code": "6", "glyphFile": "lowercase_g.svg" },
+    "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
+    "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
+    "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
+    "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+    "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
+    "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
+    "n": { "code": "4", "glyphFile": "lowercase_n.svg" },
+    "o": { "code": "0", "glyphFile": "lowercase_o.svg" },
+    "p": { "code": "01", "glyphFile": "lowercase_p.svg" },
+    "q": { "code": "6", "glyphFile": "lowercase_q.svg" },
+    "r": { "code": "7", "glyphFile": "lowercase_r.svg" },
+    "s": { "code": "5", "glyphFile": "lowercase_s.svg" },
+    "t": { "code": "7", "glyphFile": "lowercase_t.svg" },
+    "u": { "code": "0", "glyphFile": "lowercase_u.svg" },
+    "v": { "code": "7", "glyphFile": "lowercase_v.svg" },
+    "w": { "code": "14", "glyphFile": "lowercase_w.svg" },
+    "x": { "code": "7", "glyphFile": "lowercase_x.svg" },
+    "y": { "code": "6", "glyphFile": "lowercase_y.svg" },
+    "z": { "code": "2", "glyphFile": "lowercase_z.svg" }
   }
 }
 ```
@@ -74,10 +74,10 @@ DigitFlip/
 │   └── GlyphSets/
 │       └── classic/
 │           ├── letter_map.json
-│           ├── a.svg
-│           ├── b.svg
-│           ├── c.svg
-│           └── ... (one SVG per letter)
+│           ├── lowercase_a.svg
+│           ├── lowercase_b.svg
+│           ├── lowercase_c.svg
+│           └── ... (one SVG per letter, named lowercase_x.svg)
 ├── Models/
 │   ├── LetterMapping.swift        // Codable struct for letter_map.json
 │   └── GlyphSet.swift             // Loads glyph set: documents dir → bundle → placeholder fallback
@@ -99,7 +99,7 @@ DigitFlip/
 
 The `GlyphSet` loader should resolve each glyph file using this priority order:
 
-1. **Documents directory** (`App Documents/GlyphSets/classic/a.svg`) — checked first. This is where future downloadable glyph packs will be installed. Initially this directory won't exist and that's fine; the loader just skips to the next tier.
+1. **Documents directory** (`App Documents/GlyphSets/classic/lowercase_a.svg`) — checked first. This is where future downloadable glyph packs will be installed. Initially this directory won't exist and that's fine; the loader just skips to the next tier.
 2. **App bundle** (`Bundle.main` resources, copied into a `GlyphSets/classic/` group) — the default for built-in glyph sets. SVGs are added to the Xcode project as raw resource files (NOT the asset catalog, which doesn't support SVGs natively). This is where your current SVGs live. Dropping a new SVG into the Xcode project folder and rebuilding is all that's needed.
 3. **Runtime placeholder** — if neither location has the file, generate a placeholder SVG in memory (see Placeholder SVG Generation below). This means the app is always fully functional even with 0 real SVGs.
 
@@ -121,15 +121,15 @@ Input: "hi"
 
 Step 1 — Split into characters: ["h", "i"]
 Step 2 — Map to letter entries:
-  h → { code: "4", glyph: "h.svg" }
-  i → { code: "1", glyph: "i.svg" }
+  h → { code: "4", glyph: "lowercase_h.svg" }
+  i → { code: "1", glyph: "lowercase_i.svg" }
 
 Step 3 — Reverse the array of entries:
   [i_entry, h_entry]
 
 Step 4 — Output for display:
   Line 1 (digit codes):  "1 4"  (codes joined with spaces, leading zeros preserved as strings)
-  Line 2 (glyphs):       [i.svg, h.svg]  (rendered left to right)
+  Line 2 (glyphs):       [lowercase_i.svg, lowercase_h.svg]  (rendered left to right)
   Line 3 (flipped):      Line 2 with .rotationEffect(.degrees(180)) applied to Line 3's HStack (not the ScrollView or VStack)
 ```
 
@@ -138,19 +138,19 @@ Input: "hi you"
 
 Step 1 — Split into characters: ["h", "i", " ", "y", "o", "u"]
 Step 2 — Map to letter entries:
-  h → { code: "4", glyph: "h.svg" }
-  i → { code: "1", glyph: "i.svg" }
+  h → { code: "4", glyph: "lowercase_h.svg" }
+  i → { code: "1", glyph: "lowercase_i.svg" }
   " " → space (no glyph, visual gap)
-  y → { code: "6", glyph: "y.svg" }
-  o → { code: "0", glyph: "o.svg" }
-  u → { code: "0", glyph: "u.svg" }
+  y → { code: "6", glyph: "lowercase_y.svg" }
+  o → { code: "0", glyph: "lowercase_o.svg" }
+  u → { code: "0", glyph: "lowercase_u.svg" }
 
 Step 3 — Reverse the entire array of entries:
   [u_entry, o_entry, y_entry, space, i_entry, h_entry]
 
 Step 4 — Output for display:
   Line 1 (digit codes):  "0 0 6   1 4"  (wider gap where the word break is)
-  Line 2 (glyphs):       [u.svg, o.svg, y.svg, [gap], i.svg, h.svg]
+  Line 2 (glyphs):       [lowercase_u.svg, lowercase_o.svg, lowercase_y.svg, [gap], lowercase_i.svg, lowercase_h.svg]
   Line 3 (flipped):      Line 2 with .rotationEffect(.degrees(180)) applied to Line 3's HStack (not the ScrollView or VStack)
 
 Verification: magician writes "0 0 6 1 4" left-to-right using custom glyphs.
