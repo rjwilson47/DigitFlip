@@ -1,5 +1,7 @@
 {
   "glyphSet": "classic",
+  "displayName": "Digitext",
+  "status": "available",
   "letters": {
     "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
     "b": { "code": "9", "glyphFile": "lowercase_b.svg" },

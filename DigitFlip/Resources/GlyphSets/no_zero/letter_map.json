@@ -1,0 +1,33 @@
+{
+  "glyphSet": "no_zero",
+  "displayName": "Digitext without 0",
+  "status": "coming_soon",
+  "letters": {
+    "a": { "code": "0", "glyphFile": "no_zero_lowercase_a.svg" },
+    "b": { "code": "9", "glyphFile": "no_zero_lowercase_b.svg" },
+    "c": { "code": "0", "glyphFile": "no_zero_lowercase_c.svg" },
+    "d": { "code": "10", "glyphFile": "no_zero_lowercase_d.svg" },
+    "e": { "code": "2", "glyphFile": "no_zero_lowercase_e.svg" },
+    "f": { "code": "3", "glyphFile": "no_zero_lowercase_f.svg" },
+    "g": { "code": "6", "glyphFile": "no_zero_lowercase_g.svg" },
+    "h": { "code": "4", "glyphFile": "no_zero_lowercase_h.svg" },
+    "i": { "code": "1", "glyphFile": "no_zero_lowercase_i.svg" },
+    "j": { "code": "1", "glyphFile": "no_zero_lowercase_j.svg" },
+    "k": { "code": "71", "glyphFile": "no_zero_lowercase_k.svg" },
+    "l": { "code": "1", "glyphFile": "no_zero_lowercase_l.svg" },
+    "m": { "code": "41", "glyphFile": "no_zero_lowercase_m.svg" },
+    "n": { "code": "4", "glyphFile": "no_zero_lowercase_n.svg" },
+    "o": { "code": "0", "glyphFile": "no_zero_lowercase_o.svg" },
+    "p": { "code": "01", "glyphFile": "no_zero_lowercase_p.svg" },
+    "q": { "code": "6", "glyphFile": "no_zero_lowercase_q.svg" },
+    "r": { "code": "7", "glyphFile": "no_zero_lowercase_r.svg" },
+    "s": { "code": "5", "glyphFile": "no_zero_lowercase_s.svg" },
+    "t": { "code": "7", "glyphFile": "no_zero_lowercase_t.svg" },
+    "u": { "code": "0", "glyphFile": "no_zero_lowercase_u.svg" },
+    "v": { "code": "7", "glyphFile": "no_zero_lowercase_v.svg" },
+    "w": { "code": "14", "glyphFile": "no_zero_lowercase_w.svg" },
+    "x": { "code": "7", "glyphFile": "no_zero_lowercase_x.svg" },
+    "y": { "code": "6", "glyphFile": "no_zero_lowercase_y.svg" },
+    "z": { "code": "2", "glyphFile": "no_zero_lowercase_z.svg" }
+  }
+}

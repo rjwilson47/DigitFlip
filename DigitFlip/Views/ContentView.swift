@@ -57,8 +57,7 @@ struct ConfigErrorView: View {
 // MARK: - Content View (Main Screen)
 
 struct ContentView: View {
-    let encoder: EncoderService
-    let glyphCache: GlyphCache
+    @ObservedObject var viewModel: AppViewModel
 
     @State private var inputText = ""
     @State private var currentResult: EncodedResult?
@@ -69,7 +68,7 @@ struct ContentView: View {
     // Live validation (runs against lowercased input per spec)
     private var validationError: ValidationError? {
         guard !inputText.isEmpty else { return nil }
-        return encoder.validate(inputText)
+        return viewModel.encoder?.validate(inputText)
     }
 
     private var validationMessage: String? {
@@ -85,7 +84,11 @@ struct ContentView: View {
 
     // Go disabled when empty/whitespace, or any validation error
     private var isGoDisabled: Bool {
-        encoder.isInputEmpty(inputText) || validationError != nil
+        viewModel.encoder?.isInputEmpty(inputText) != false || validationError != nil
+    }
+
+    private var selectedDisplayName: String {
+        viewModel.glyphSetInfos.first(where: { $0.id == viewModel.selectedGlyphSetID })?.displayName ?? viewModel.selectedGlyphSetID
     }
 
     var body: some View {
@@ -96,6 +99,47 @@ struct ContentView: View {
                 .foregroundStyle(.white)
                 .padding(.top, 24)
                 .padding(.bottom, 4)
+
+            // Glyph set picker
+            if viewModel.glyphSetInfos.count > 1 {
+                Menu {
+                    ForEach(viewModel.glyphSetInfos) { info in
+                        if info.isAvailable {
+                            Button {
+                                if info.id != viewModel.selectedGlyphSetID {
+                                    viewModel.switchGlyphSet(to: info.id)
+                                    withAnimation(.easeOut(duration: 0.3)) {
+                                        currentResult = nil
+                                        currentError = nil
+                                        hasPressed = false
+                                    }
+                                }
+                            } label: {
+                                if info.id == viewModel.selectedGlyphSetID {
+                                    Label(info.displayName, systemImage: "checkmark")
+                                } else {
+                                    Text(info.displayName)
+                                }
+                            }
+                        } else {
+                            Text("\(info.displayName) (Coming Soon)")
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        Text(selectedDisplayName)
+                            .font(.system(size: 14, weight: .medium))
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10, weight: .semibold))
+                    }
+                    .foregroundStyle(Theme.accent)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Theme.inputBackground)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                .padding(.top, 4)
+            }
 
             // Input area
             VStack(spacing: 8) {
@@ -192,7 +236,7 @@ struct ContentView: View {
                         // Line 2: Write This
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Write This")
-                            GlyphRowView(elements: result.elements, glyphCache: glyphCache)
+                            GlyphRowView(elements: result.elements, glyphCache: viewModel.glyphCache!)
                                 .padding(8)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -203,7 +247,7 @@ struct ContentView: View {
                         // Line 3: Flipped Preview
                         VStack(alignment: .leading, spacing: 6) {
                             sectionHeader("Flipped Preview")
-                            FlippedGlyphRowView(elements: result.elements, glyphCache: glyphCache)
+                            FlippedGlyphRowView(elements: result.elements, glyphCache: viewModel.glyphCache!)
                                 .padding(8)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -212,10 +256,51 @@ struct ContentView: View {
                         }
                     }
                 }
+                // Digit frequency footnote
+                digitFrequencyView(result: result)
             }
             .padding(.horizontal, 20)
             .padding(.top, 24)
         }
+    }
+
+    // MARK: - Digit Frequency
+
+    @ViewBuilder
+    private func digitFrequencyView(result: EncodedResult) -> some View {
+        let freq = result.digitFrequency
+        let highUse = result.highUseDigits
+
+        VStack(alignment: .leading, spacing: 6) {
+            Text("DIGITS USED")
+                .font(.system(size: 9, weight: .semibold))
+                .foregroundStyle(Theme.sectionHeader.opacity(0.6))
+                .tracking(1.0)
+
+            HStack(spacing: 0) {
+                ForEach(0..<10, id: \.self) { digit in
+                    let count = freq[digit]
+                    let isHigh = count > EncodedResult.digitWarningThreshold
+                    VStack(spacing: 2) {
+                        Text("\(digit)")
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundStyle(Theme.sectionHeader.opacity(0.5))
+                        Text(count > 0 ? "\(count)" : "\u{2014}")
+                            .font(.system(size: 11, weight: isHigh ? .bold : .regular, design: .monospaced))
+                            .foregroundStyle(isHigh ? Color.orange : Theme.sectionHeader.opacity(0.7))
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+
+            if !highUse.isEmpty {
+                let warnings = highUse.map { "digit \($0.digit) used \($0.count)×" }.joined(separator: ", ")
+                Text("Note: \(warnings)")
+                    .font(.system(size: 10))
+                    .foregroundStyle(.orange.opacity(0.8))
+            }
+        }
+        .padding(.top, 12)
     }
 
     private func sectionHeader(_ title: String) -> some View {
@@ -229,6 +314,7 @@ struct ContentView: View {
 
     private func handleGo() {
         isTextFieldFocused = false
+        guard let encoder = viewModel.encoder else { return }
 
         let result = encoder.encode(inputText)
         withAnimation(.easeOut(duration: 0.3)) {

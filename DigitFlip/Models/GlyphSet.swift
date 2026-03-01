@@ -1,4 +1,7 @@
 import Foundation
+import os.log
+
+private let logger = Logger(subsystem: "com.digitflip", category: "GlyphSet")
 
 /// Handles loading glyph set configuration and resolving glyph files
 /// using the three-tier fallback: documents directory → bundle → placeholder.
@@ -6,6 +9,53 @@ struct GlyphSet {
 
     enum LoadError: Error, Equatable {
         case configurationError(String)
+    }
+
+    // MARK: - Glyph Set Discovery
+
+    /// Discover all glyph sets by scanning bundle subfolders of GlyphSets/.
+    /// Returns metadata for each set (for the picker UI), sorted with available sets first.
+    static func discoverGlyphSets(bundle: Bundle = .main) -> [GlyphSetInfo] {
+        guard let glyphSetsURL = bundle.resourceURL?.appendingPathComponent("GlyphSets") else {
+            logger.warning("GlyphSets directory not found in bundle resources")
+            return []
+        }
+        guard let contents = try? FileManager.default.contentsOfDirectory(
+            at: glyphSetsURL,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: .skipsHiddenFiles
+        ) else {
+            logger.warning("Could not enumerate GlyphSets directory at \(glyphSetsURL.path)")
+            return []
+        }
+
+        var infos: [GlyphSetInfo] = []
+        for folderURL in contents {
+            guard (try? folderURL.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true else {
+                continue
+            }
+            let jsonURL = folderURL.appendingPathComponent("letter_map.json")
+            guard let data = try? Data(contentsOf: jsonURL) else { continue }
+
+            // Decode just the top-level metadata without parsing all letter entries
+            struct MetadataOnly: Decodable {
+                let glyphSet: String
+                let displayName: String
+                let status: String
+            }
+            guard let meta = try? JSONDecoder().decode(MetadataOnly.self, from: data) else { continue }
+            infos.append(GlyphSetInfo(
+                glyphSet: meta.glyphSet,
+                displayName: meta.displayName,
+                status: meta.status
+            ))
+        }
+
+        // Sort: available first, then by display name
+        return infos.sorted { a, b in
+            if a.isAvailable != b.isAvailable { return a.isAvailable }
+            return a.displayName < b.displayName
+        }
     }
 
     // MARK: - Letter Map Loading

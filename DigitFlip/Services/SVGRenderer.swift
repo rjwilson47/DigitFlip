@@ -32,7 +32,8 @@ struct TextElement {
 // MARK: - Glyph Cache
 
 /// Caches parsed glyphs keyed by "glyphSetName/glyphFile".
-/// Built when a glyph set is loaded, reused across Go taps.
+/// Glyphs are loaded lazily on first access; `preload()` can warm the cache at startup.
+@MainActor
 final class GlyphCache {
     private var cache: [String: ParsedGlyph] = [:]
     private let glyphSetName: String
@@ -41,31 +42,11 @@ final class GlyphCache {
         self.glyphSetName = glyphSetName
     }
 
-    /// Pre-load all glyphs from a letter map.
-    func loadAll(letterMap: LetterMap) {
+    /// Optional warm-up: pre-parse all glyphs so the first Go tap is instant.
+    /// Not required — glyphs also load lazily via `glyph(forLetter:code:glyphFile:)`.
+    func preload(letterMap: LetterMap) {
         for (letter, entry) in letterMap.letters {
-            let key = cacheKey(for: entry.glyphFile)
-            if cache[key] != nil { continue }
-
-            // Try file-based SVG (tier 1 & 2)
-            if let url = GlyphSet.resolveGlyphFileURL(
-                fileName: entry.glyphFile,
-                glyphSetName: glyphSetName
-            ),
-               let data = try? Data(contentsOf: url),
-               let svgString = String(data: data, encoding: .utf8)
-            {
-                if let parsed = SVGParser.parse(svgString: svgString) {
-                    cache[key] = parsed
-                    continue
-                }
-            }
-
-            // Tier 3: placeholder
-            let placeholder = GlyphSet.placeholderSVG(letter: letter, code: entry.code)
-            if let parsed = SVGParser.parse(svgString: placeholder) {
-                cache[key] = parsed
-            }
+            _ = glyph(forLetter: letter, code: entry.code, glyphFile: entry.glyphFile)
         }
     }
 
