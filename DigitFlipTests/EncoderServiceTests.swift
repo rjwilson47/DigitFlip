@@ -425,4 +425,68 @@ final class EncoderServiceTests: XCTestCase {
             XCTFail("Encoding all letters should succeed, got: \(error)")
         }
     }
+
+    // MARK: - Digit Frequency
+
+    func testDigitFrequency_SingleLetter() {
+        let encoder = makeEncoder()
+        let result = try! encoder.encode("a").get()
+        // a = code "0" → digit 0 used once
+        let freq = result.digitFrequency
+        XCTAssertEqual(freq[0], 1)
+        XCTAssertEqual(freq[1], 0)
+    }
+
+    func testDigitFrequency_MultiDigitCode() {
+        let encoder = makeEncoder()
+        let result = try! encoder.encode("m").get()
+        // m = code "41" → digit 4 once, digit 1 once
+        let freq = result.digitFrequency
+        XCTAssertEqual(freq[4], 1)
+        XCTAssertEqual(freq[1], 1)
+        XCTAssertEqual(freq[0], 0)
+    }
+
+    func testDigitFrequency_WordWithRepeats() {
+        let encoder = makeEncoder()
+        let result = try! encoder.encode("mom").get()
+        // m=41, o=0, m=41 → digits: 4(×2), 1(×2), 0(×1)
+        let freq = result.digitFrequency
+        XCTAssertEqual(freq[0], 1)
+        XCTAssertEqual(freq[1], 2)
+        XCTAssertEqual(freq[4], 2)
+    }
+
+    func testDigitFrequency_SpacesIgnored() {
+        let encoder = makeEncoder()
+        let result = try! encoder.encode("a b").get()
+        // a=0, space, b=9 → digits: 0(×1), 9(×1)
+        let freq = result.digitFrequency
+        XCTAssertEqual(freq[0], 1)
+        XCTAssertEqual(freq[9], 1)
+        XCTAssertEqual(freq.reduce(0, +), 2)
+    }
+
+    func testHighUseDigits_BelowThreshold() {
+        let encoder = makeEncoder()
+        let result = try! encoder.encode("hi").get()
+        // h=4, i=1 → no digit exceeds 4
+        XCTAssertTrue(result.highUseDigits.isEmpty)
+    }
+
+    func testHighUseDigits_AboveThreshold() {
+        let encoder = makeEncoder()
+        // "acoua" → a=0, c=0, o=0, u=0, a=0 → digit 0 used 5 times
+        let result = try! encoder.encode("acoua").get()
+        XCTAssertEqual(result.highUseDigits.count, 1)
+        XCTAssertEqual(result.highUseDigits[0].digit, 0)
+        XCTAssertEqual(result.highUseDigits[0].count, 5)
+    }
+
+    func testHighUseDigits_ExactlyAtThreshold() {
+        let encoder = makeEncoder()
+        // "acou" → a=0, c=0, o=0, u=0 → digit 0 used 4 times (at threshold, not over)
+        let result = try! encoder.encode("acou").get()
+        XCTAssertTrue(result.highUseDigits.isEmpty)
+    }
 }

@@ -67,6 +67,31 @@ struct EncodedResult: Equatable {
             }
         }
     }
+
+    /// Frequency count for each digit 0–9 across all letter codes.
+    /// Index 0 = count of "0", index 1 = count of "1", etc.
+    var digitFrequency: [Int] {
+        var counts = Array(repeating: 0, count: 10)
+        for element in elements {
+            if case .letter(let entry) = element {
+                for char in entry.code {
+                    if let digit = char.wholeNumberValue {
+                        counts[digit] += 1
+                    }
+                }
+            }
+        }
+        return counts
+    }
+
+    /// Digits (0–9) that exceed the high-use threshold.
+    static let digitWarningThreshold = 4
+
+    var highUseDigits: [(digit: Int, count: Int)] {
+        digitFrequency.enumerated().compactMap { digit, count in
+            count > Self.digitWarningThreshold ? (digit, count) : nil
+        }
+    }
 }
 
 // MARK: - EncoderService

@@ -256,10 +256,51 @@ struct ContentView: View {
                         }
                     }
                 }
+                // Digit frequency footnote
+                digitFrequencyView(result: result)
             }
             .padding(.horizontal, 20)
             .padding(.top, 24)
         }
+    }
+
+    // MARK: - Digit Frequency
+
+    @ViewBuilder
+    private func digitFrequencyView(result: EncodedResult) -> some View {
+        let freq = result.digitFrequency
+        let highUse = result.highUseDigits
+
+        VStack(alignment: .leading, spacing: 6) {
+            Text("DIGITS USED")
+                .font(.system(size: 9, weight: .semibold))
+                .foregroundStyle(Theme.sectionHeader.opacity(0.6))
+                .tracking(1.0)
+
+            HStack(spacing: 0) {
+                ForEach(0..<10, id: \.self) { digit in
+                    let count = freq[digit]
+                    let isHigh = count > EncodedResult.digitWarningThreshold
+                    VStack(spacing: 2) {
+                        Text("\(digit)")
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundStyle(Theme.sectionHeader.opacity(0.5))
+                        Text(count > 0 ? "\(count)" : "\u{2014}")
+                            .font(.system(size: 11, weight: isHigh ? .bold : .regular, design: .monospaced))
+                            .foregroundStyle(isHigh ? Color.orange : Theme.sectionHeader.opacity(0.7))
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+
+            if !highUse.isEmpty {
+                let warnings = highUse.map { "digit \($0.digit) used \($0.count)×" }.joined(separator: ", ")
+                Text("Note: \(warnings)")
+                    .font(.system(size: 10))
+                    .foregroundStyle(.orange.opacity(0.8))
+            }
+        }
+        .padding(.top, 12)
     }
 
     private func sectionHeader(_ title: String) -> some View {
