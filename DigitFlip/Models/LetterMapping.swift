@@ -17,13 +17,21 @@ struct LetterMap: Codable, Equatable {
     let displayName: String
     /// Availability status: "available" or "coming_soon".
     let status: String
+    /// Symbols shown in the frequency counter (e.g., ["0"..."9"] or ["0"..."9","J","Q","K"]).
+    /// Optional in JSON — defaults to digits 0-9 if omitted.
+    let symbols: [String]?
     /// Mapping from lowercase letter (single character) to its entry.
     let letters: [String: LetterEntry]
+
+    /// The symbols to display in the frequency counter, with a default fallback.
+    var frequencySymbols: [String] {
+        symbols ?? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    }
 }
 
 /// Lightweight metadata for populating the glyph set picker without loading all letter entries.
 struct GlyphSetInfo: Identifiable, Equatable {
-    /// The folder name / internal identifier (e.g., "classic", "no_zero").
+    /// The folder name / internal identifier (e.g., "classic", "card_deck").
     let glyphSet: String
     /// Human-readable name shown in the picker (e.g., "Digitext").
     let displayName: String

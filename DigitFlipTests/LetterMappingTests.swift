@@ -22,7 +22,7 @@ final class LetterMappingTests: XCTestCase {
             "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
             "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
             "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
-            "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+            "k": { "code": "21", "glyphFile": "lowercase_k.svg" },
             "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
             "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
             "n": { "code": "4", "glyphFile": "lowercase_n.svg" },
@@ -105,7 +105,7 @@ final class LetterMappingTests: XCTestCase {
         let map = try! JSONDecoder().decode(LetterMap.self, from: data)
 
         XCTAssertEqual(map.letters["m"]?.code, "41")
-        XCTAssertEqual(map.letters["k"]?.code, "71")
+        XCTAssertEqual(map.letters["k"]?.code, "21")
         XCTAssertEqual(map.letters["w"]?.code, "14")
         XCTAssertEqual(map.letters["d"]?.code, "10")
     }
@@ -212,7 +212,7 @@ final class LetterMappingTests: XCTestCase {
             "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
             "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
             "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
-            "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+            "k": { "code": "21", "glyphFile": "lowercase_k.svg" },
             "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
             "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
             "n": { "code": "4", "glyphFile": "lowercase_n.svg" },

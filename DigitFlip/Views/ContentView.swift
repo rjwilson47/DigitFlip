@@ -257,7 +257,7 @@ struct ContentView: View {
                     }
                 }
                 // Digit frequency footnote
-                digitFrequencyView(result: result)
+                digitFrequencyView(result: result, symbols: viewModel.encoder?.letterMap.frequencySymbols ?? ["0","1","2","3","4","5","6","7","8","9"])
             }
             .padding(.horizontal, 20)
             .padding(.top, 24)
@@ -267,9 +267,9 @@ struct ContentView: View {
     // MARK: - Digit Frequency
 
     @ViewBuilder
-    private func digitFrequencyView(result: EncodedResult) -> some View {
-        let freq = result.digitFrequency
-        let highUse = result.highUseDigits
+    private func digitFrequencyView(result: EncodedResult, symbols: [String]) -> some View {
+        let freq = result.symbolFrequency
+        let highUse = result.highUseSymbols
 
         VStack(alignment: .leading, spacing: 6) {
             Text("DIGITS USED")
@@ -278,11 +278,11 @@ struct ContentView: View {
                 .tracking(1.0)
 
             HStack(spacing: 0) {
-                ForEach(0..<10, id: \.self) { digit in
-                    let count = freq[digit]
+                ForEach(symbols, id: \.self) { symbol in
+                    let count = freq[symbol] ?? 0
                     let isHigh = count > EncodedResult.digitWarningThreshold
                     VStack(spacing: 2) {
-                        Text("\(digit)")
+                        Text(symbol)
                             .font(.system(size: 11, design: .monospaced))
                             .foregroundStyle(Theme.sectionHeader.opacity(0.5))
                         Text(count > 0 ? "\(count)" : "\u{2014}")
@@ -294,7 +294,7 @@ struct ContentView: View {
             }
 
             if !highUse.isEmpty {
-                let warnings = highUse.map { "digit \($0.digit) used \($0.count)×" }.joined(separator: ", ")
+                let warnings = highUse.map { "\($0.symbol) used \($0.count)×" }.joined(separator: ", ")
                 Text("Note: \(warnings)")
                     .font(.system(size: 10))
                     .foregroundStyle(.orange.opacity(0.8))

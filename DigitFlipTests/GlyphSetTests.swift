@@ -184,10 +184,10 @@ final class GlyphSetTests: XCTestCase {
         XCTAssertEqual(info.id, "classic")
     }
 
-    func testGlyphSetInfo_ComingSoonStatus() {
-        let info = GlyphSetInfo(glyphSet: "no_zero", displayName: "Digitext without 0", status: "coming_soon")
-        XCTAssertFalse(info.isAvailable)
-        XCTAssertEqual(info.id, "no_zero")
+    func testGlyphSetInfo_CardDeckStatus() {
+        let info = GlyphSetInfo(glyphSet: "card_deck", displayName: "Digitext for card decks (without zero)", status: "available")
+        XCTAssertTrue(info.isAvailable)
+        XCTAssertEqual(info.id, "card_deck")
     }
 
     func testLetterMap_IncludesDisplayNameAndStatus() {

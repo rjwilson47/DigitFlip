@@ -39,7 +39,7 @@ Below is the full mapping. **Store this as a structured data file** (`letter_map
     "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
     "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
     "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
-    "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+    "k": { "code": "21", "glyphFile": "lowercase_k.svg" },
     "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
     "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
     "n": { "code": "4", "glyphFile": "lowercase_n.svg" },
@@ -80,10 +80,10 @@ DigitFlip/
 │       │   ├── lowercase_b.svg
 │       │   ├── lowercase_c.svg
 │       │   └── ... (one SVG per letter, named lowercase_x.svg)
-│       └── no_zero/
+│       └── card_deck/
 │           ├── letter_map.json
-│           ├── no_zero_lowercase_a.svg
-│           └── ... (one SVG per letter, named no_zero_lowercase_x.svg)
+│           ├── card_deck_lowercase_a.svg
+│           └── ... (one SVG per letter, named card_deck_lowercase_x.svg)
 ├── Models/
 │   ├── LetterMapping.swift        // Codable struct for letter_map.json
 │   └── GlyphSet.swift             // Loads glyph set: documents dir → bundle → placeholder fallback
@@ -247,7 +247,7 @@ Suggested placeholder format:
 
 ## Future Considerations (Don't Build Yet, But Architect For)
 
-- **Multiple glyph sets ("digitexts"):** Implemented. The app discovers glyph sets at runtime by scanning `GlyphSets/` subfolders. Each folder contains its own `letter_map.json` (with `displayName` and `status` fields) and SVG files. A picker in the UI lets the user switch between available sets; sets with `"status": "coming_soon"` appear greyed out. Currently ships with `classic/` (available) and `no_zero/` (coming soon).
+- **Multiple glyph sets ("digitexts"):** Implemented. The app discovers glyph sets at runtime by scanning `GlyphSets/` subfolders. Each folder contains its own `letter_map.json` (with `displayName` and `status` fields) and SVG files. A picker in the UI lets the user switch between available sets; sets with `"status": "coming_soon"` appear greyed out. Currently ships with `classic/` (available) and `card_deck/` (available).
 - **Downloadable glyph packs:** Download zipped glyph sets from a server, unzip into the documents directory `GlyphSets/` folder. The loader already checks documents directory first, so downloaded packs automatically take priority over bundled defaults.
 - **Share/export:** Ability to export the glyph row as an image.
 - **Phrase library:** Saved phrases the magician uses frequently.

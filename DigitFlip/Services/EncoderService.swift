@@ -68,29 +68,27 @@ struct EncodedResult: Equatable {
         }
     }
 
-    /// Frequency count for each digit 0–9 across all letter codes.
-    /// Index 0 = count of "0", index 1 = count of "1", etc.
-    var digitFrequency: [Int] {
-        var counts = Array(repeating: 0, count: 10)
+    /// Frequency count for each symbol (digit or card value) across all letter codes.
+    /// Keys are single characters as strings (e.g., "0", "7", "J", "Q").
+    var symbolFrequency: [String: Int] {
+        var counts: [String: Int] = [:]
         for element in elements {
             if case .letter(let entry) = element {
                 for char in entry.code {
-                    if let digit = char.wholeNumberValue {
-                        counts[digit] += 1
-                    }
+                    counts[String(char), default: 0] += 1
                 }
             }
         }
         return counts
     }
 
-    /// Digits (0–9) that exceed the high-use threshold.
+    /// Symbols that exceed the high-use threshold.
     static let digitWarningThreshold = 4
 
-    var highUseDigits: [(digit: Int, count: Int)] {
-        digitFrequency.enumerated().compactMap { digit, count in
-            count > Self.digitWarningThreshold ? (digit, count) : nil
-        }
+    var highUseSymbols: [(symbol: String, count: Int)] {
+        symbolFrequency.compactMap { symbol, count in
+            count > Self.digitWarningThreshold ? (symbol, count) : nil
+        }.sorted { $0.symbol < $1.symbol }
     }
 }
 
