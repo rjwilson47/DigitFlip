@@ -23,7 +23,7 @@ final class EncoderServiceTests: XCTestCase {
             "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
             "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
             "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
-            "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+            "k": { "code": "21", "glyphFile": "lowercase_k.svg" },
             "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
             "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
             "n": { "code": "4", "glyphFile": "lowercase_n.svg" },
@@ -71,7 +71,7 @@ final class EncoderServiceTests: XCTestCase {
     func testSingleLetterK_MultiDigitCode() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("k").get()
-        XCTAssertEqual(result.digitDisplay, "71")
+        XCTAssertEqual(result.digitDisplay, "21")
         XCTAssertEqual(result.glyphFiles, ["lowercase_k.svg"])
     }
 
@@ -110,8 +110,8 @@ final class EncoderServiceTests: XCTestCase {
     func testWord_WithMultiDigitCodes() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("desk").get()
-        // d=10, e=2, s=5, k=71; reversed: k, s, e, d → "71 5 2 10"
-        XCTAssertEqual(result.digitDisplay, "71 5 2 10")
+        // d=10, e=2, s=5, k=21; reversed: k, s, e, d → "21 5 2 10"
+        XCTAssertEqual(result.digitDisplay, "21 5 2 10")
     }
 
     // MARK: - Reversal Order
@@ -428,65 +428,65 @@ final class EncoderServiceTests: XCTestCase {
 
     // MARK: - Digit Frequency
 
-    func testDigitFrequency_SingleLetter() {
+    func testSymbolFrequency_SingleLetter() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("a").get()
-        // a = code "0" → digit 0 used once
-        let freq = result.digitFrequency
-        XCTAssertEqual(freq[0], 1)
-        XCTAssertEqual(freq[1], 0)
+        // a = code "0" → symbol "0" used once
+        let freq = result.symbolFrequency
+        XCTAssertEqual(freq["0"], 1)
+        XCTAssertNil(freq["1"])
     }
 
-    func testDigitFrequency_MultiDigitCode() {
+    func testSymbolFrequency_MultiDigitCode() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("m").get()
-        // m = code "41" → digit 4 once, digit 1 once
-        let freq = result.digitFrequency
-        XCTAssertEqual(freq[4], 1)
-        XCTAssertEqual(freq[1], 1)
-        XCTAssertEqual(freq[0], 0)
+        // m = code "41" → symbol "4" once, symbol "1" once
+        let freq = result.symbolFrequency
+        XCTAssertEqual(freq["4"], 1)
+        XCTAssertEqual(freq["1"], 1)
+        XCTAssertNil(freq["0"])
     }
 
-    func testDigitFrequency_WordWithRepeats() {
+    func testSymbolFrequency_WordWithRepeats() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("mom").get()
-        // m=41, o=0, m=41 → digits: 4(×2), 1(×2), 0(×1)
-        let freq = result.digitFrequency
-        XCTAssertEqual(freq[0], 1)
-        XCTAssertEqual(freq[1], 2)
-        XCTAssertEqual(freq[4], 2)
+        // m=41, o=0, m=41 → symbols: "4"(×2), "1"(×2), "0"(×1)
+        let freq = result.symbolFrequency
+        XCTAssertEqual(freq["0"], 1)
+        XCTAssertEqual(freq["1"], 2)
+        XCTAssertEqual(freq["4"], 2)
     }
 
-    func testDigitFrequency_SpacesIgnored() {
+    func testSymbolFrequency_SpacesIgnored() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("a b").get()
-        // a=0, space, b=9 → digits: 0(×1), 9(×1)
-        let freq = result.digitFrequency
-        XCTAssertEqual(freq[0], 1)
-        XCTAssertEqual(freq[9], 1)
-        XCTAssertEqual(freq.reduce(0, +), 2)
+        // a=0, space, b=9 → symbols: "0"(×1), "9"(×1)
+        let freq = result.symbolFrequency
+        XCTAssertEqual(freq["0"], 1)
+        XCTAssertEqual(freq["9"], 1)
+        XCTAssertEqual(freq.values.reduce(0, +), 2)
     }
 
-    func testHighUseDigits_BelowThreshold() {
+    func testHighUseSymbols_BelowThreshold() {
         let encoder = makeEncoder()
         let result = try! encoder.encode("hi").get()
-        // h=4, i=1 → no digit exceeds 4
-        XCTAssertTrue(result.highUseDigits.isEmpty)
+        // h=4, i=1 → no symbol exceeds 4
+        XCTAssertTrue(result.highUseSymbols.isEmpty)
     }
 
-    func testHighUseDigits_AboveThreshold() {
+    func testHighUseSymbols_AboveThreshold() {
         let encoder = makeEncoder()
-        // "acoua" → a=0, c=0, o=0, u=0, a=0 → digit 0 used 5 times
+        // "acoua" → a=0, c=0, o=0, u=0, a=0 → symbol "0" used 5 times
         let result = try! encoder.encode("acoua").get()
-        XCTAssertEqual(result.highUseDigits.count, 1)
-        XCTAssertEqual(result.highUseDigits[0].digit, 0)
-        XCTAssertEqual(result.highUseDigits[0].count, 5)
+        XCTAssertEqual(result.highUseSymbols.count, 1)
+        XCTAssertEqual(result.highUseSymbols[0].symbol, "0")
+        XCTAssertEqual(result.highUseSymbols[0].count, 5)
     }
 
-    func testHighUseDigits_ExactlyAtThreshold() {
+    func testHighUseSymbols_ExactlyAtThreshold() {
         let encoder = makeEncoder()
-        // "acou" → a=0, c=0, o=0, u=0 → digit 0 used 4 times (at threshold, not over)
+        // "acou" → a=0, c=0, o=0, u=0 → symbol "0" used 4 times (at threshold, not over)
         let result = try! encoder.encode("acou").get()
-        XCTAssertTrue(result.highUseDigits.isEmpty)
+        XCTAssertTrue(result.highUseSymbols.isEmpty)
     }
 }

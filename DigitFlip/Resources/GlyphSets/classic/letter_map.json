@@ -2,6 +2,7 @@
   "glyphSet": "classic",
   "displayName": "Digitext",
   "status": "available",
+  "symbols": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
   "letters": {
     "a": { "code": "0", "glyphFile": "lowercase_a.svg" },
     "b": { "code": "9", "glyphFile": "lowercase_b.svg" },
@@ -13,7 +14,7 @@
     "h": { "code": "4", "glyphFile": "lowercase_h.svg" },
     "i": { "code": "1", "glyphFile": "lowercase_i.svg" },
     "j": { "code": "1", "glyphFile": "lowercase_j.svg" },
-    "k": { "code": "71", "glyphFile": "lowercase_k.svg" },
+    "k": { "code": "21", "glyphFile": "lowercase_k.svg" },
     "l": { "code": "1", "glyphFile": "lowercase_l.svg" },
     "m": { "code": "41", "glyphFile": "lowercase_m.svg" },
     "n": { "code": "4", "glyphFile": "lowercase_n.svg" },

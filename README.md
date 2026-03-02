@@ -24,7 +24,7 @@ The app supports multiple glyph sets ("digitexts"), each with its own visual sty
 | Digitext | Description | Status |
 |----------|-------------|--------|
 | Digitext | The default glyph set | Available |
-| Digitext without 0 | Alternative glyphs that avoid the digit 0 (e.g. using deck of cards) | Coming Soon |
+| Digitext for card decks (without zero) | Alternative glyphs using playing card values (J, Q, K) instead of 0 | Available |
 
 ## Requirements
 
@@ -55,9 +55,9 @@ DigitFlip/
         ├── classic/                # Default digitext
         │   ├── letter_map.json
         │   └── lowercase_*.svg
-        └── no_zero/                # Coming soon digitext
+        └── card_deck/              # Card deck digitext
             ├── letter_map.json
-            └── no_zero_lowercase_*.svg
+            └── card_deck_lowercase_*.svg
 ```
 
 ## Adding a New Digitext
